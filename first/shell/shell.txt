@@ -1,1 +1,8 @@
 on Linux:
+
+编辑脚本文件：
+HelloWorld.sh
+
+运行脚本
+chmod +x ./HelloWorld.sh  #使脚本具有执行权限
+./HelloWorld.sh  #执行脚本
