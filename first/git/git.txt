@@ -1,0 +1,7 @@
+1.work on branch dev, not on master.
+2.frequently used:
+git add **.py
+git commit -m "add illustration here"   
+
+git pull #solve conflict
+git push origin #push to remote origin
