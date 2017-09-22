@@ -1,6 +1,6 @@
 on Linux:
 
-编辑脚本文件：
+Shell编程脚本文件：
 HelloWorld.sh
 
 运行脚本
