@@ -1,0 +1,2 @@
+SQLServer 2016安装时的错误：Polybase要求安装Oracle JRE 7更新51或更高版本:
+下载jre7，配置好环境就好吧
