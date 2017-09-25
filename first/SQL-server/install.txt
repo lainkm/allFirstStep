@@ -1,2 +1,4 @@
 SQLServer 2016安装时的错误：Polybase要求安装Oracle JRE 7更新51或更高版本:
 下载jre7，配置好环境就好吧
+SQL Server 2016不自带SSMS 需要自己安装，安转后打开SSMS就可以用了：
+连接数据库，新建库，新建表。
