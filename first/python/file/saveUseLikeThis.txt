@@ -1,0 +1,8 @@
+1 #打开py文件，读出每一行加上行号，写进一个txt文件
+2 with open('useLikeThis.py', 'r', encoding = 'utf-8') as pyfile:
+3 	cLine = pyfile.readlines()
+4 	for line in range(len(cLine)):
+5 		cLine[line] = str(line + 1) + ' ' + cLine[line]
+6 
+7 with open('saveUseLikeThis.txt', 'w', encoding = 'utf-8') as txtfile:
+8 	txtfile.writelines(cLine)
