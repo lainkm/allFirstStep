@@ -6,3 +6,209 @@
 6 
 7 with open('saveUseLikeThis.txt', 'w', encoding = 'utf-8') as txtfile:
 8 	txtfile.writelines(cLine)
+9 
+10 #map & reduce, reduce需要引入包
+11 from functools import reduce
+12 print(list(map(str, [1, 2, 3])))
+13 
+14 def f(x):
+15 	return x * x
+16 print(list(map(f, [1, 2, 3])))
+17 
+18 def a(x, y):
+19 	return x * 10 + y
+20 print(reduce(a, [1, 2, 3, 4]))
+21 
+22 #利用map/reduce将字符转化成数字："9527"-->9527,简化为lambda函数
+23 #但是python已经提供int函数了
+24 def char2int(s):
+25 	def fn(x, y):
+26 		return x * 10 + y
+27 	def char2num(s):
+28 		return {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9}[s]
+29 	return reduce(fn, map(char2num, s))
+30 print(char2int("9527"))
+31 print(int("9527"))
+32 
+33 #test首字母大写，map实现
+34 def normalize(name):
+35     return name.capitalize()
+36 L1 = ['adam', 'LISA', 'barT']
+37 L2 = list(map(normalize, L1))
+38 print(L2)
+39 
+40 #过滤器filter
+41 #筛选出是偶数的
+42 def is_odd(n):
+43 	return n % 2 == 1
+44 print(list(filter(is_odd, [1, 2, 4, 5, 6, 9, 10, 15])))
+45 
+46 #筛选出不是空的
+47 def not_empty(s):
+48 	return s and s.strip()
+49 print(list(filter(not_empty, ['A', 'B', None, 'c', ' '])))
+50 
+51 #抓取网页requests库栗子
+52 import requests
+53 r = requests.get("http://baidu.com")
+54 print('状态码:', r.status_code)
+55 print(r.encoding)
+56 #print(r.text)
+57 r.encoding = 'utf-8'
+58 #print(r.text)
+59 print(type(r))
+60 
+61 #get方法：r = requsets.get(url, params=None, **kwargs)
+62 #来构造向服务器请求的Request对象
+63 #返回一个含服务器资源的Response对象
+64 
+65 #属性：
+66 r.status_code #先检查这个。。返回200表示连接成功，其他为失败
+67 r.text #url对应页面内容，即http响应内容的字符串形式
+68 r.encoding #网页的编码方式，从httpheader中猜的方式？
+69 r.apparent_encoding #从响应的内容文本中分析出的编码方式
+70 r.content #如获得图片以二进制存储，通过content还原图片
+71 
+72 #栗子：
+73 #编码方式：网络上的资源有各种编码
+74 #从http中header猜测编码方式，
+75 #如果没有charset会默认为ISO-8859-1，这样的不能解析中文
+76 r.encoding
+77 #备选编码apparent_encoding是从内容分析的，所以r.encoding不能正确解码（乱码）的时候
+78 #可以用apparent_encoding(如utf-8)赋予encoding，读取中文
+79 r.encoding = 'utf-8'
+80 
+81 #通用代码框架
+82 #抓取网页并处理异常：
+83 import requests
+84 def getHTMLText(url):
+85 	try:
+86 		r = requests.get(url, timeout = 30)
+87 		r.raise_for_status()
+88 		r.encoding = r.apparent_encoding
+89 		return r.text
+90 	except:
+91 		"Error"
+92 
+93 if __name__ == "__main__":
+94 	url = "http://www.baidu.com"
+95 	#print(getHTMLText(url))
+96 
+97 #http协议：超文本传输协议，用户发起请求，服务器做出相应。
+98 #采用url作为定位网络资源的标识
+99 #url格式：
+100 #HTTP协议对资源的操作：GET,HEAD,POST,PUT(所有url的资源都要提交),PATCH(局部更新),DELETE
+101 
+102 
+103 
+104 
+105 #爬取网页Requests库
+106 #爬取网站Scrapy库
+107 
+108 #遵守robots协议
+109 #打开网站根目录下的robots.txt看看
+110 #http://www.baidu.com/robots.txt
+111 #http：//www.jd.com/robots.txt
+112 
+113 #实战一：
+114 #爬取京东实战：
+115 import requests
+116 r = requests.get("https://item.jd.com/2967929.html")
+117 print(r.status_code)
+118 print(r.encoding)
+119 print(r.request.headers)
+120 #print(r.text)
+121 
+122 #使用通用代码框架爬取京东商品信息：
+123 import requests
+124 url = "https://item.jd.com/2967929.html"
+125 try:
+126 	r = requests.get(url)
+127 	r.raise_for_status()
+128 	r.encoding = r.apparent_encoding
+129 	#print(r.text[:1000])
+130 except:
+131 	print("爬取失败")
+132 
+133 #实战二：
+134 #爬取亚马逊,发现r.status_code不是200（网站可以通过约束User-Agent和robots协议拒绝访问？）
+135 r = requests.get("https://www.amazon.cn/gp/product/B01M8L5Z3Y")
+136 print(r.status_code)
+137 print(r.encoding)
+138 print(r.request.headers)   #发现头部信息中，爬虫发送的请求User-Agent如实的写了python..
+139 
+140 #尝试修改头部信息，使User-Agent修改，如改为浏览器访问
+141 kv = {'user-agent' : 'Mozilla/5.0'} #Mozilla-->浏览器
+142 url = "https://www.amazon.cn/gp/product/B01M8L5Z3Y"
+143 r = requests.get(url, headers = kv)
+144 print(r.status_code)
+145 print(r.request.headers)
+146 
+147 #框架形式：
+148 import requests
+149 url = "https://www.amazon.cn/gp/product/B01M8L5Z3Y"
+150 try:
+151 	kv = {'user-agent':'Mozilla/5.0'}
+152 	r = requests.get(url, headers = kv)
+153 	r.raise_for_status()
+154 	r.encoding = r.apparent_encoding
+155 	#print(r.text[1000:2000])
+156 except:
+157 	print("爬取失败")
+158 
+159 #实战三：
+160 #搜索baidu关键词，同上只需要构造url就可以了，包含搜索的关键词
+161 kv = {'wd':'Python'}
+162 url = "http://www.baidu.com/s"   #baidu搜索的接口，搜索内容只需要修改wd=搜索内容的键值对
+163 r = requests.get(url, params = kv)
+164 print(r.status_code)
+165 print(r.request.url)   #看一下url是否被构造成功
+166 print(len(r.text))
+167 
+168 #框架全代码：
+169 import requests
+170 url = "http://www.baidu.com/s"
+171 try:
+172 	kv = {'wd':'百度外卖'}
+173 	r = requests.get(url, params = kv)
+174 	print(r.request.url)   #对象的属性
+175 	r.raise_for_status()
+176 	print(len(r.text))  #特别长，就先别打印，看看长度
+177 except:
+178 	print("fail")
+179 
+180 #网络图片的爬取和存储：
+181 path = "E:/allFirstStep/first/python/file/jdPic.jpg"
+182 url = "https://img14.360buyimg.com/n0/jfs/t9307/268/2052051657/217542/578f9944/59c72a7cN642b442e.jpg"
+183 r = requests.get(url)
+184 print(r.status_code)
+185 #把二进制图片存成文件
+186 with open(path, 'wb') as f:
+187 	f.write(r.content)
+188 
+189 #框架：
+190 import requests
+191 import os
+192 url = "https://img14.360buyimg.com/n0/jfs/t9307/268/2052051657/217542/578f9944/59c72a7cN642b442e.jpg"
+193 root = "E://allFirstStep//first//python//file//"
+194 path = root + url.split('/')[-1]
+195 try:
+196 	if not os.path.exists(root):
+197 		os.mkdir(root)
+198 	if not os.path.exists(path):
+199 		r = requests.get(url)
+200 		with open(path, 'wb') as fp:
+201 			fp.write(r.content)
+202 			f.close()
+203 			print("文件保存成功")
+204 	else:
+205 		print("文件已存在")
+206 except:
+207 	print("爬取失败")
+208 
+209 
+210 #随便查询下ip，找到url修改ip就好了
+211 url = "http://www.ip138.com/ips138.asp?ip="
+212 r = requests.get(url + '172.2.2.23')
+213 print(r.status_code)
+214 print(r.text[:100])   #不显示全，就前100就好
