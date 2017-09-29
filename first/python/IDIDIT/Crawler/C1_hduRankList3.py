@@ -1,8 +1,10 @@
-#获取前五页的排名保存在列表里，输出在屏幕上
-#输入姓名查到排名
+#前五页排名，保存为csv文件
 import requests
 from bs4 import BeautifulSoup
 import bs4
+import csv    #单行读入
+import pandas as pd   #整个读入
+import codecs
 
 def getHTML(url):
 	try:
@@ -39,6 +41,16 @@ def findRankOf(ulist, name):
 		if name in ulist[u]:
 			return ulist[u][0]
 
+def saveAsCsv(ulist):
+	#使用csv库写入，但会多一行，一种办法是newline='',另一种办法是wb二进制什么的
+	with open('C1_hduRankList(import_csv).csv', 'w', encoding ='utf-8', newline = "") as cf:
+		writer = csv.writer(cf)
+		# writer.writerow(ulist[1])  #写入一行(如表头)
+		writer.writerows(ulist)     #写入多行
+
+	df = pd.DataFrame(ulist[1:], columns = ulist[0])
+	df.to_csv('C1_hduRankList(import_pandas).csv', encoding = 'utf-8')
+
 def main():
 	ulist = [] 
 	
@@ -47,8 +59,9 @@ def main():
 		printTitle = p + 1
 		html = getHTML(url + str(p + 1))
 		getInfoSaveAsList(printTitle, ulist, html)
-	printList(ulist, len(ulist))
-	name = input("请输入要查询的名字:\n")
-	print(findRankOf(ulist, name))
+	# printList(ulist, len(ulist))
+	# name = input("请输入要查询的名字:\n")
+	# print(findRankOf(ulist, name))
+	saveAsCsv(ulist)
 
 main()
