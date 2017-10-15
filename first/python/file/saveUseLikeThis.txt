@@ -177,38 +177,43 @@
 177 except:
 178 	print("fail")
 179 
-180 #网络图片的爬取和存储：
-181 path = "E:/allFirstStep/first/python/file/jdPic.jpg"
-182 url = "https://img14.360buyimg.com/n0/jfs/t9307/268/2052051657/217542/578f9944/59c72a7cN642b442e.jpg"
-183 r = requests.get(url)
-184 print(r.status_code)
-185 #把二进制图片存成文件
-186 with open(path, 'wb') as f:
-187 	f.write(r.content)
-188 
-189 #框架：
-190 import requests
-191 import os
-192 url = "https://img14.360buyimg.com/n0/jfs/t9307/268/2052051657/217542/578f9944/59c72a7cN642b442e.jpg"
-193 root = "E://allFirstStep//first//python//file//"
-194 path = root + url.split('/')[-1]
-195 try:
-196 	if not os.path.exists(root):
-197 		os.mkdir(root)
-198 	if not os.path.exists(path):
-199 		r = requests.get(url)
-200 		with open(path, 'wb') as fp:
-201 			fp.write(r.content)
-202 			f.close()
-203 			print("文件保存成功")
-204 	else:
-205 		print("文件已存在")
-206 except:
-207 	print("爬取失败")
-208 
+180 #实例四：
+181 #网络图片的爬取和存储：
+182 path = "E:/allFirstStep/first/python/file/jdPic.jpg"
+183 url = "https://img14.360buyimg.com/n0/jfs/t9307/268/2052051657/217542/578f9944/59c72a7cN642b442e.jpg"
+184 r = requests.get(url)
+185 print(r.status_code)
+186 #把二进制图片存成文件
+187 with open(path, 'wb') as f:
+188 	f.write(r.content)
+189 
+190 #框架：
+191 import requests
+192 import os
+193 url = "https://img14.360buyimg.com/n0/jfs/t9307/268/2052051657/217542/578f9944/59c72a7cN642b442e.jpg"
+194 root = "E://allFirstStep//first//python//file//"
+195 path = root + url.split('/')[-1]
+196 try:
+197 	if not os.path.exists(root):
+198 		os.mkdir(root)
+199 	if not os.path.exists(path):
+200 		r = requests.get(url)
+201 		with open(path, 'wb') as fp:
+202 			fp.write(r.content)
+203 			f.close()
+204 			print("文件保存成功")
+205 	else:
+206 		print("文件已存在")
+207 except:
+208 	print("爬取失败")
 209 
-210 #随便查询下ip，找到url修改ip就好了
-211 url = "http://www.ip138.com/ips138.asp?ip="
-212 r = requests.get(url + '172.2.2.23')
-213 print(r.status_code)
-214 print(r.text[:100])   #不显示全，就前100就好
+210 #实例五
+211 #随便查询下ip，找到url修改ip就好了
+212 #提交的形式-->人工的分析接口
+213 url = "http://www.ip138.com/ips138.asp?ip="
+214 r = requests.get(url + '172.2.2.23')
+215 print(r.status_code)
+216 print(r.text[:500])   #不显示全，就前500这样就好
+217 
+218 import beautifulsoup
+219 

@@ -216,5 +216,3 @@ print(r.status_code)
 print(r.text[:500])   #不显示全，就前500这样就好
 
 
-
-

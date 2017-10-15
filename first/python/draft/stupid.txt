@@ -1,0 +1,43 @@
+1 from bs4 import BeautifulSoup  
+2 import requests  
+3 import csv  
+4 import bs4  
+5   
+6   
+7 #检查url地址  
+8 def check_link(url):  
+9     try:  
+10         r = requests.get(url)  
+11         r.raise_for_status()  
+12         r.encoding = r.apparent_encoding
+13         return r.text
+14     except:  
+15         print('无法链接服务器！！！')  
+16   
+17   
+18 #爬取资源  
+19 def get_contents(ulist,rurl):  
+20     soup = BeautifulSoup(rurl,'lxml')  
+21     trs = soup.find_all('tr')  
+22     for tr in trs:  
+23         ui = []  
+24         for td in tr:  
+25             ui.append(td.string)  
+26         ulist.append(ui)  
+27       
+28 #保存资源  
+29 def save_contents(urlist):  
+30     with open("D:/2016年中国企业500强排行榜.csv",'w') as f:  
+31         writer = csv.writer(f)  
+32         writer.writerow(['2016年中国企业500强排行榜'])  
+33         for i in range(len(urlist)):       
+34         	writer.writerow([urlist[i][0],urlist[i][1],urlist[i][2]])  
+35   
+36 def main():  
+37     urli = []  
+38     url = "http://www.maigoo.com/news/463071.html"  
+39     rs = check_link(url)  
+40     get_contents(urli,rs)  
+41     save_contents(urli)  
+42   
+43 main()  
