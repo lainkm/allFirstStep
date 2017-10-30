@@ -1,5 +1,0 @@
-package com.qq.common;
-
-public interface MessageType {
-
-}
