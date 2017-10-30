@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;RiChangHuaShui/img/sysbtn_close_normal.png&apos; to &apos;close.png&apos;" description="Rename resource &apos;sysbtn_close_normal.png&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="img/sysbtn_close_normal.png" name="close.png" stamp="1497839234552" updateReferences="true"/>
+</session>

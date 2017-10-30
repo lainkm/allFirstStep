@@ -1,0 +1,31 @@
+package huashui.hhh;
+
+import java.io.*;
+
+public class FileWrite {
+
+	
+	public FileWrite(){
+	File file = new File("Re.txt");
+	Writer w;
+	try {
+		w = new FileWriter(file);
+	
+	//Reader r = new FileReader(file);
+	
+	BufferedWriter bw = new BufferedWriter(w);
+	//BufferedReader br = new BufferedReader(r);
+	
+	bw.write("ÂüÀöÉµ±Æ");
+	}
+	catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	}
+	
+	public static void main(String[] args)
+	{
+		FileWrite f =  new FileWrite();
+	}
+}

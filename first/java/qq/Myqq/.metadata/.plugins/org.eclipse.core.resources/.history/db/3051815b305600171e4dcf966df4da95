@@ -1,0 +1,11 @@
+package com.qq.client.model;
+
+import com.qq.common.User;
+
+public class QqRegisterCheck {
+
+	public String checkUser(User u)
+	{
+		return new MyQqConnect().sendRegisterMessage(u);
+	}
+}
