@@ -1,0 +1,9 @@
+# 查询信息
+show databases;
+use db1;
+show tables;
+show table status from db;
+show columns from table1;
+show index from table1;
+
+# 操作
