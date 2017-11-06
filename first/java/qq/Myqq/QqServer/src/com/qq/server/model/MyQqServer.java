@@ -12,6 +12,7 @@ import javax.swing.tree.ExpandVetoException;
 
 import com.qq.common.Message;
 import com.qq.common.User;
+import com.qq.server.db.SqlHelper;
 import com.qq.server.tools.ManageClientThread;
 
 
@@ -35,83 +36,79 @@ public class MyQqServer {
 				ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
 				
 				User u = (User)ois.readObject();
-				System.out.println("服务器收到用户 id: " + u.getId() + " 密码：" + u.getPw());
+				System.out.println("服务器收到用户 id: " +u.getName() +u.getId() + " 密码：" + u.getPw());
 				
 				if(u.getId().equals(""))
 				{
 					Message m = new Message();
-					try{
-						File file = new File("Register.txt");
-						Writer w = new FileWriter(file, true);
-						Reader r = new FileReader(file);
-						
-						//FileWriter file = new FileWriter("S.txt","aw");
-						BufferedWriter bw = new BufferedWriter(w);
-						BufferedReader br = new BufferedReader(r);
-						String string;
-						String string1 = new String("");
-						while((string = br.readLine())!=null)
-						{
-							//StringTokenizer temp = new StringTokenizer(string, " ");
-							//string1 = temp.nextToken();
-							
-							Scanner in = new Scanner(string);
-							Long id = in.nextLong() + 1;
-							string1 = id + "";
-						}
-						m.setCon(string1);
-						
-						String str = m.getCon() + " " + u.getPw();
-						System.out.println((String.valueOf(string1) + 1) + "");
-						int n = str.length();
-						bw.write(str, 0, n);
-						bw.newLine();
-						
-						
-						bw.close();
-						w.close();
-						r.close();
-						}
-						catch(Exception e)
-						{
-							e.printStackTrace();
-						}
 					
-					
-					//用户名不存在，要注册
-					//m.setCon((random++) + "");
-					System.out.println(u.getPw());
-
+					SqlHelper sh = new SqlHelper();
+					int id = sh.register(u);
+					System.out.println(id+"注册成功");
+					m.setCon(id+"");
 					System.out.println(m.getCon());
 					ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
 					oos.writeObject(m);
 
+//					try{
+//						File file = new File("Register.txt");
+//						Writer w = new FileWriter(file, true);
+//						Reader r = new FileReader(file);
+//						
+//						//FileWriter file = new FileWriter("S.txt","aw");
+//						BufferedWriter bw = new BufferedWriter(w);
+//						BufferedReader br = new BufferedReader(r);
+//						String string;
+//						String string1 = new String("");
+//						while((string = br.readLine())!=null)
+//						{
+//							//StringTokenizer temp = new StringTokenizer(string, " ");
+//							//string1 = temp.nextToken();
+//							
+//							Scanner in = new Scanner(string);
+//							Long id = in.nextLong() + 1;
+//							string1 = id + "";
+//						}
+//						m.setCon(string1);
+//						
+//						String str = m.getCon() + " " + u.getPw();
+//						System.out.println((String.valueOf(string1) + 1) + "");
+//						int n = str.length();
+//						bw.write(str, 0, n);
+//						bw.newLine();
+//						
+//						
+//						bw.close();
+//						w.close();
+//						r.close();
+//						}
+//						catch(Exception e)
+//						{
+//							e.printStackTrace();
+//						}
+//					
+//					
+//					//用户名不存在，要注册
+//					//m.setCon((random++) + "");
+//					System.out.println(u.getPw());
+
+//					System.out.println(m.getCon());
+//					ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+//					oos.writeObject(m);
+
 
 				}
 				else{
-				//把验证账号的结果通过信息包再发送回去
+				//把验证账号的结果通过信息包再发送回去，通过数据库验证
 				Message m = new Message();
 				ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
-				
-				
-				File f = new File("Register.txt");
-				Reader r = new FileReader(f);
-				BufferedReader br = new BufferedReader(r);
-				String s1;
 				boolean flag = false;
-				while((s1 = br.readLine())!=null)
-				{
-		
-					Scanner in = new Scanner(s1);
-					if(in.next().equals(u.getId()))
-					{
-						if(in.next().equals(u.getPw()))
-						{
-							flag = true;
-						}
-					}
-				}
 				
+				SqlHelper sh = new SqlHelper();
+				if(sh.query(u))
+				{
+					flag = true;
+				}
 				if(flag == true)//先随便写一个
 				{
 					//返回一个登陆成功的信息包

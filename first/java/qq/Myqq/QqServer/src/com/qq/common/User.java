@@ -8,6 +8,22 @@ public class User implements java.io.Serializable{//序列化，让一个对象在网络上或
 
 	private String id;
 	private String pw;
+	private String name;
+	
+//	public User(String id, String name, String pw)
+//	{
+//		this.name = name;
+//		this.id = id;
+//		this.pw = pw;
+//	}
+	public String getName()
+	{
+		return name;
+	}
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 	public String getId() {
 		return id;
 	}

@@ -112,6 +112,7 @@ public class QqRegister extends JFrame implements ActionListener{
 				//得到登陆的user信息
 				User u = new User();
 				u.setId("");
+				u.setName(new String(jtf_name.getText().trim()));
 				u.setPw(new String(jtf_pw.getPassword()));
 				
 				String id = qr.backId(u);

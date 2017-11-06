@@ -6,7 +6,6 @@
 <fullyQualifiedTypeName name="java.io.ObjectOutput"/>
 <fullyQualifiedTypeName name="java.lang.Object"/>
 <fullyQualifiedTypeName name="com.qq.client.model.QqClientUser"/>
-<fullyQualifiedTypeName name="com.qq.common.User"/>
 <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
 <fullyQualifiedTypeName name="javax.swing.Action"/>
 <fullyQualifiedTypeName name="com.qq.server.model.MyQqServer"/>
@@ -15,7 +14,6 @@
 <fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
 <fullyQualifiedTypeName name="java.text.ParsePosition"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
-<fullyQualifiedTypeName name="com.qq.server.db.SqlHelper"/>
 <fullyQualifiedTypeName name="com.qq.client.tools.NewUserThread"/>
 <fullyQualifiedTypeName name="com.qq.client.view.QqChat"/>
 <fullyQualifiedTypeName name="com.qq.client.view.QqClientLogin"/>
@@ -60,4 +58,6 @@
 <fullyQualifiedTypeName name="java.io.BufferedReader"/>
 <fullyQualifiedTypeName name="java.io.Reader"/>
 <fullyQualifiedTypeName name="java.io.FileReader"/>
+<fullyQualifiedTypeName name="com.qq.common.User"/>
+<fullyQualifiedTypeName name="com.qq.server.db.SqlHelper"/>
 </qualifiedTypeNameHistroy>

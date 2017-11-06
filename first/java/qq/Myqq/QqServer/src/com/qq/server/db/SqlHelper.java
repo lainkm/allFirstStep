@@ -6,79 +6,85 @@ package com.qq.server.db;
 
 import java.sql.*;
 
+import com.qq.common.User;
+
 
 public class SqlHelper {
-}
-	/*
-	public static void main(String[] args)
-	{
-		String driver = "com.mysql.jdbc.Driver";  
-		//localhost指本机，也可以用本地ip地址代替，3306为MySQL数据库的默认端口号，“user”为要连接的数据库名
-		String url = "jdbc:mysql://localhost:3306/user";
-
-		//String username = "root"; //数据库的用户名
-		//String password = "123456"; //密码
+	public static final String url = "jdbc:mysql://127.0.0.1:3306/qqUser";
+	public static final String name = "com.mysql.jdbc.Driver";
+	public static final String user = "root";
+	public static final String password = "666666";
 	
-		new SqlHelper();
-		String sql = "select * from Db where id =" + id + " and pw =" + pw;//编写要执行的sql语句，此处为从user表中查询所有用户的信息
-	try
+	public static Connection conn = null;
+	public static PreparedStatement pst = null; 
+	public SqlHelper()
 	{
-	Class.forName(driver);//加载驱动程序，此处运用隐式注册驱动程序的方法
+		try {
+			Class.forName(name);//指定连接类型
+			conn = DriverManager.getConnection(url, user, password);//获取连接
+			 if(!conn.isClosed()) 
+	             System.out.println("Succeeded connecting to the Database!");
+			 else System.out.println("Failed..");
+
+			} catch (Exception e) {
+			e.printStackTrace();
+			}  
 	}
-	catch(ClassNotFoundException e)
+	
+//	public static void main(String[] args)
+//	{
+//		SqlHelper sh = new SqlHelper();
+//		System.out.println("haha");
+//		try {
+//			//System.out.println(sh.query(new User("2","hah","123")));
+//			System.out.println("da");
+//			System.out.println(sh.query(new User("1","hahah","123")));
+//			int id = sh.register(new User("0","hah","123"));
+//			System.out.println(sh.query(new User("2","hah","123")));
+//			
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+	
+
+	public boolean query(User u) throws SQLException
 	{
-	e.printStackTrace();
+		 Statement statement = conn.createStatement();
+         String sql = "select * from qq where qq_num = '"+u.getId()+"' and qq_pw = '"+u.getPw()+"'";
+         System.out.println(sql);
+         ResultSet rs = statement.executeQuery(sql);
+         boolean flag = false;
+         if (rs.next())
+         {
+        	 flag = true;
+         }
+         else{
+        	 flag = false;
+         }
+         rs.close();
+         conn.close();
+         System.out.println(flag);
+         return flag;
 	}
-	try
+	
+	public int register(User u) throws SQLException
 	{
-	Connection con = DriverManager.getConnection(url,username,password);//创建连接对象
-	Statement st = con.createStatement();//创建sql执行对象
-	ResultSet rs = st.executeQuery(sql);//执行sql语句并返回结果集
-	while(rs.next())//对结果集进行遍历输出
-	{
-	System.out.println("id: "+rs.getString(1));//通过列的标号来获得数据
-	System.out.println("name: "+rs.getString("name"));//通过列名来获得数据
-	System.out.println("value: "+rs.getString("value"));
+		int id = 0;
+		Statement statement = conn.createStatement();
+        String sql_findId = "select max(qq_num) from qq";
+        ResultSet rs = statement.executeQuery(sql_findId);
+        rs.next();
+        id = rs.getInt(1) + 1;
+        String sql_insert = "insert into qq(qq_num,qq_name,qq_pw) values("+"'"+id+"'"+","+"'"+u.getName()+"'"+","+"'"+u.getPw()+"'"+")";
+        System.out.println(sql_insert);
+        statement.executeUpdate(sql_insert);
+       
+
+        rs.close();
+        conn.close();
+		return id;
 	}
-	//关闭相关的对象
-	if(rs != null)
-	{
-	try
-	{
-	rs.close();
-	}
-	catch(SQLException e)
-	{
-	e.printStackTrace();
-	}
-	}
-	if(st != null)
-	{
-	try
-	{
-	st.close();
-	}
-	catch(SQLException e)
-	{
-	e.printStackTrace();
-	}
-	}
-	if(con !=null)
-	{
-	try
-	{
-	con.close();
-	}
-	catch(SQLException e)
-	{
-	e.printStackTrace();
-	}
-	}
-	}
-	catch(SQLException e)
-	{
-	e.printStackTrace();
-	}
-	}
+	
 }
-*/
